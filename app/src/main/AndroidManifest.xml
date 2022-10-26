@@ -13,14 +13,7 @@
         android:theme="@style/Theme.App_listas"
         tools:targetApi="31">
         <activity
-            android:name=".ItemActivity_"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".AddItemActivity_"
+            android:name=".ItemView"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

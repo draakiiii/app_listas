@@ -10,28 +10,29 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
+public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolderCustom> {
 
     private ArrayList<Item> mData;
     private LayoutInflater mInflater;
-    private ItemClickListener mClickListener;
+    private ItemRecycleClick onItemRecycleListener;
 
     // data is passed into the constructor
-    ItemAdapter(Context context, ArrayList<Item> data) {
+    public ItemAdapter(Context context, ArrayList<Item> data, ItemRecycleClick onItemRecycleListener) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
+        this.onItemRecycleListener = onItemRecycleListener;
     }
 
     // inflates the row layout from xml when needed
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolderCustom onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.recyclerview, parent, false);
-        return new ViewHolder(view);
+        return new ViewHolderCustom(view, onItemRecycleListener);
     }
 
     // binds the data to the TextView in each row
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolderCustom holder, int position) {
         Item item = mData.get(position);
         holder.title.setText(item.getTitle());
         holder.description.setText(item.getDescription());
@@ -44,36 +45,32 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     }
 
 
-    // stores and recycles views as they are scrolled off screen
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView title;
-        TextView description;
-
-        ViewHolder(View itemView) {
-            super(itemView);
-            title = itemView.findViewById(R.id.tvTitle);
-            description = itemView.findViewById(R.id.tvDescription);
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            if (mClickListener != null) mClickListener.onItemClick(view, getBindingAdapterPosition());
-        }
-    }
-
     // convenience method for getting data at click position
     Item getItem(int id) {
         return mData.get(id);
     }
 
-    // allows clicks events to be caught
-    void setClickListener(ItemClickListener itemClickListener) {
-        this.mClickListener = itemClickListener;
+    // parent activity will implement this method to respond to click events
+    public interface ItemRecycleClick {
+        void onRecycleClick(int position);
     }
 
-    // parent activity will implement this method to respond to click events
-    public interface ItemClickListener {
-        void onItemClick(View view, int position);
+    // stores and recycles views as they are scrolled off screen
+    public class ViewHolderCustom extends RecyclerView.ViewHolder implements View.OnClickListener {
+        TextView title, description;
+        ItemRecycleClick onItemRecycleListener;
+
+        ViewHolderCustom(View itemView, ItemRecycleClick onItemRecycleListener) {
+            super(itemView);
+            title = itemView.findViewById(R.id.tvTitle);
+            description = itemView.findViewById(R.id.tvDescription);
+            this.onItemRecycleListener = onItemRecycleListener;
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            onItemRecycleListener.onRecycleClick(getBindingAdapterPosition());
+        }
     }
 }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">app_listas</string>
+    <string name="navigation_drawer_open">abrir</string>
+    <string name="navigation_drawer_close">cerrar</string>
+    <string name="edit">editar</string>
+    <string name="confirm">confirmar</string>
+    <string name="cancel">cancelar</string>
+    <string name="delete">eliminar</string>
+    <string name="add">añadir</string>
+    <string name="set_title">introduce un nombre</string>
+    <string name="set_description">introduce una descripción</string>
+    <string name="done">hecho</string>
+    <string name="next">siguiente</string>
+</resources>

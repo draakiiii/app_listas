@@ -1,15 +1,50 @@
 package com.draakiiii;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
+import java.io.Serializable;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 
-@Data
+@Entity
 public class Item {
-    String title;
-    String description;
+
+    // Contador autoincremental
+    @Ignore
+    private static final AtomicInteger count = new AtomicInteger(0);
+
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    @NonNull
+    public int id;
+
+    @ColumnInfo(name = "title")
+    @NonNull
+    public String title;
+
+    @ColumnInfo(name = "description")
+    public String description;
+
+
+    public Item(String title, String description) {
+        this.id = count.incrementAndGet();
+        this.title = title;
+        this.description = description;
+    }
+
+    public int getId() {
+        return id;
+    }
+
 
     public String getTitle() {
         return title;
@@ -27,13 +62,8 @@ public class Item {
         this.description = description;
     }
 
-    public Item(String title, String description) {
-        this.title = title;
-        this.description = description;
-    }
-
     @Override
     public String toString() {
-        return title + " | " + description;
+        return title + " | " + description + " | " + id;
     }
 }
